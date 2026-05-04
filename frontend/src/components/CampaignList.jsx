@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { getAllCampaigns, deleteCampaign } from '../api/campaignApi';
 import './CampaignList.css';
 
-function CampaignList({ refreshTrigger, onEdit }) {
+function CampaignList({ refreshTrigger, onEdit, onDelete }) {
     const [campaigns, setCampaigns] = useState([]);
     const [error, setError] = useState(null);
 
@@ -26,10 +26,12 @@ function CampaignList({ refreshTrigger, onEdit }) {
         try {
             await deleteCampaign(id);
             setCampaigns(campaigns.filter(c => c.id !== id));
+            onDelete();
         } catch {
             setError('Failed to delete campaign');
         }
     };
+
 
     if (error) return <div>{error}</div>;
 

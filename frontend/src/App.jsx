@@ -30,6 +30,10 @@ function App() {
         setShowForm(true);
     };
 
+    const handleDelete = () => {
+    setRefreshTrigger(prev => prev + 1);
+    };
+
     return (
         <div className="app">
             <div className="app-header">
@@ -52,6 +56,7 @@ function App() {
             <CampaignList
                 refreshTrigger={refreshTrigger}
                 onEdit={handleEdit}
+                onDelete={handleDelete}
             />
         </div>
     );
