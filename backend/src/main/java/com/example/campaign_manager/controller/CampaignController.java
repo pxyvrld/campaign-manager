@@ -28,14 +28,29 @@ public class CampaignController {
         return ResponseEntity.ok(campaignService.getAllCampaigns());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CampaignResponse> getCampaignById(@PathVariable Long id) {
-        return ResponseEntity.ok(campaignService.getCampaignById(id));
-    }
-
     @PostMapping
     public ResponseEntity<CampaignResponse> createCampaign(@Valid @RequestBody CampaignRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(campaignService.createCampaign(request));
+    }
+
+    @GetMapping("/account/emerald-balance")
+    public ResponseEntity<EmeraldAccountResponse> getEmeraldBalance() {
+        return ResponseEntity.ok(campaignService.getEmeraldBalance());
+    }
+
+    @GetMapping("/towns")
+    public ResponseEntity<List<String>> getTowns() {
+        return ResponseEntity.ok(predefinedTowns);
+    }
+
+    @GetMapping("/keywords")
+    public ResponseEntity<List<String>> getKeywords() {
+        return ResponseEntity.ok(predefinedKeywords);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CampaignResponse> getCampaignById(@PathVariable Long id) {
+        return ResponseEntity.ok(campaignService.getCampaignById(id));
     }
 
     @PutMapping("/{id}")
@@ -50,18 +65,4 @@ public class CampaignController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/emerald-balance")
-    public ResponseEntity<EmeraldAccountResponse> getEmeraldBalance() {
-        return ResponseEntity.ok(campaignService.getEmeraldBalance());
-    }
-
-    @GetMapping("/towns")
-    public ResponseEntity<List<String>> getTowns() {
-        return ResponseEntity.ok(predefinedTowns);
-    }
-
-    @GetMapping("/keywords")
-    public ResponseEntity<List<String>> getKeywords() {
-        return ResponseEntity.ok(predefinedKeywords);
-    }
 }
