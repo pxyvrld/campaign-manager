@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createCampaign, updateCampaign, getKeywords, getTowns } from '../api/campaignApi';
+import './CampaignForm.css';
 
 function CampaignForm({ editingCampaign, onSave, onCancel }) {
     const [name, setName] = useState(editingCampaign?.name || '');
@@ -88,107 +89,118 @@ function CampaignForm({ editingCampaign, onSave, onCancel }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <div className="campaign-form">
             <h2>{editingCampaign ? 'Edit Campaign' : 'New Campaign'}</h2>
 
-            {error && <div style={{ color: 'red' }}>{error}</div>}
+            {error && <div className="form-error">{error}</div>}
 
-            <div>
-                <label>Campaign Name *</label>
-                <input
-                    type="text"
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    required
-                />
-            </div>
+            <form onSubmit={handleSubmit}>
+                <div className="form-grid">
+                    <div className="form-group form-group--full">
+                        <label>Campaign Name *</label>
+                        <input
+                            type="text"
+                            value={name}
+                            onChange={e => setName(e.target.value)}
+                            required
+                        />
+                    </div>
 
-            <div>
-                <label>Keywords *</label>
-                <input
-                    type="text"
-                    value={keywordInput}
-                    onChange={e => handleKeywordInput(e.target.value)}
-                    placeholder="Type to search keywords..."
-                />
-                {keywordSuggestions.length > 0 && (
-                    <ul>
-                        {keywordSuggestions.map(k => (
-                            <li key={k} onClick={() => addKeyword(k)} style={{ cursor: 'pointer' }}>
-                                {k}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                <div>
-                    {keywords.map(k => (
-                        <span key={k}>
-                            {k} <button type="button" onClick={() => removeKeyword(k)}>x</button>
-                        </span>
-                    ))}
+                    <div className="form-group form-group--full">
+                        <label>Keywords *</label>
+                        <div className="keywords-input-wrapper">
+                            <input
+                                type="text"
+                                value={keywordInput}
+                                onChange={e => handleKeywordInput(e.target.value)}
+                                placeholder="Type to search keywords..."
+                            />
+                            {keywordSuggestions.length > 0 && (
+                                <ul className="keywords-suggestions">
+                                    {keywordSuggestions.map(k => (
+                                        <li key={k} onClick={() => addKeyword(k)}>
+                                            {k}
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                        </div>
+                        <div className="keywords-tags">
+                            {keywords.map(k => (
+                                <span key={k} className="keyword-tag">
+                                    {k}
+                                    <button type="button" onClick={() => removeKeyword(k)}>×</button>
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Bid Amount (min 0.01 zł) *</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0.01"
+                            value={bidAmount}
+                            onChange={e => setBidAmount(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Campaign Fund *</label>
+                        <input
+                            type="number"
+                            step="0.01"
+                            min="0.01"
+                            value={campaignFund}
+                            onChange={e => setCampaignFund(e.target.value)}
+                            required
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Status *</label>
+                        <select value={status} onChange={e => setStatus(e.target.value === 'true')}>
+                            <option value="true">On</option>
+                            <option value="false">Off</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Town</label>
+                        <select value={town} onChange={e => setTown(e.target.value)}>
+                            <option value="">-- Select town --</option>
+                            {availableTowns.map(t => (
+                                <option key={t} value={t}>{t}</option>
+                            ))}
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label>Radius (km) *</label>
+                        <input
+                            type="number"
+                            min="1"
+                            value={radius}
+                            onChange={e => setRadius(e.target.value)}
+                            required
+                        />
+                    </div>
                 </div>
-            </div>
 
-            <div>
-                <label>Bid Amount (min 0.01) *</label>
-                <input
-                    type="number"
-                    step="0.01"
-                    min="0.01"
-                    value={bidAmount}
-                    onChange={e => setBidAmount(e.target.value)}
-                    required
-                />
-            </div>
-
-            <div>
-                <label>Campaign Fund *</label>
-                <input
-                    type="number"
-                    step="0.01"
-                    min="0.01"
-                    value={campaignFund}
-                    onChange={e => setCampaignFund(e.target.value)}
-                    required
-                />
-            </div>
-
-            <div>
-                <label>Status *</label>
-                <select value={status} onChange={e => setStatus(e.target.value === 'true')}>
-                    <option value="true">On</option>
-                    <option value="false">Off</option>
-                </select>
-            </div>
-
-            <div>
-                <label>Town</label>
-                <select value={town} onChange={e => setTown(e.target.value)}>
-                    <option value="">-- Select town --</option>
-                    {availableTowns.map(t => (
-                        <option key={t} value={t}>{t}</option>
-                    ))}
-                </select>
-            </div>
-
-            <div>
-                <label>Radius (km) *</label>
-                <input
-                    type="number"
-                    min="1"
-                    value={radius}
-                    onChange={e => setRadius(e.target.value)}
-                    required
-                />
-            </div>
-
-            <button type="submit">
-                {editingCampaign ? 'Update' : 'Create'}
-            </button>
-            {onCancel && (
-                <button type="button" onClick={onCancel}>Cancel</button>
-            )}
-        </form>
+                <div className="form-actions">
+                    <button type="submit" className="btn btn-primary">
+                        {editingCampaign ? 'Update' : 'Create'}
+                    </button>
+                    {onCancel && (
+                        <button type="button" className="btn btn-secondary" onClick={onCancel}>
+                            Cancel
+                        </button>
+                    )}
+                </div>
+            </form>
+        </div>
     );
 }
 

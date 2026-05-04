@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getAllCampaigns, deleteCampaign } from '../api/campaignApi';
+import './CampaignList.css';
 
 function CampaignList({ refreshTrigger, onEdit }) {
     const [campaigns, setCampaigns] = useState([]);
@@ -33,12 +34,12 @@ function CampaignList({ refreshTrigger, onEdit }) {
     if (error) return <div>{error}</div>;
 
     return (
-        <div>
+        <div className="campaign-list">
             <h2>Campaigns</h2>
             {campaigns.length === 0 ? (
-                <p>No campaigns yet. Create one!</p>
+                <p className="campaign-list__empty">No campaigns yet. Create one!</p>
             ) : (
-                <table>
+                <table className="campaign-table">
                     <thead>
                         <tr>
                             <th>Name</th>
@@ -58,12 +59,18 @@ function CampaignList({ refreshTrigger, onEdit }) {
                                 <td>{campaign.keywords.join(', ')}</td>
                                 <td>{campaign.bidAmount} zł</td>
                                 <td>{campaign.campaignFund} zł</td>
-                                <td>{campaign.status ? 'On' : 'Off'}</td>
+                                <td>
+                                    <span className={`status-badge status-badge--${campaign.status ? 'on' : 'off'}`}>
+                                        {campaign.status ? 'On' : 'Off'}
+                                    </span>
+                                </td>
                                 <td>{campaign.town || '-'}</td>
                                 <td>{campaign.radius} km</td>
                                 <td>
-                                    <button onClick={() => onEdit(campaign)}>Edit</button>
-                                    <button onClick={() => handleDelete(campaign.id)}>Delete</button>
+                                    <div className="action-buttons">
+                                        <button className="btn btn-primary" onClick={() => onEdit(campaign)}>Edit</button>
+                                        <button className="btn btn-danger" onClick={() => handleDelete(campaign.id)}>Delete</button>
+                                    </div>
                                 </td>
                             </tr>
                         ))}

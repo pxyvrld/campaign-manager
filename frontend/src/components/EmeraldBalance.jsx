@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { getEmeraldBalance } from '../api/campaignApi';
+import './EmeraldBalance.css';
 
 function EmeraldBalance({ refreshTrigger }) {
     const [balance, setBalance] = useState(null);
@@ -16,17 +17,16 @@ function EmeraldBalance({ refreshTrigger }) {
                 if (!cancelled) setError('Failed to fetch balance');
             });
 
-        return () => {
-            cancelled = true;
-        };
+        return () => { cancelled = true; };
     }, [refreshTrigger]);
 
     if (error) return <div>{error}</div>;
     if (balance === null) return <div>Loading...</div>;
 
     return (
-        <div>
-            <h2>Emerald Account Balance: {balance} zł</h2>
+        <div className="emerald-balance">
+            <span className="emerald-balance__label">Emerald Balance:</span>
+            <span className="emerald-balance__amount">{balance} zł</span>
         </div>
     );
 }
