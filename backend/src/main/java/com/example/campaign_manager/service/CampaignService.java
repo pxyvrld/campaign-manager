@@ -3,6 +3,7 @@ package com.example.campaign_manager.service;
 import com.example.campaign_manager.dto.CampaignRequest;
 import com.example.campaign_manager.dto.CampaignResponse;
 import com.example.campaign_manager.dto.EmeraldAccountResponse;
+import com.example.campaign_manager.exception.BusinessException;
 import com.example.campaign_manager.model.Campaign;
 import com.example.campaign_manager.model.EmeraldAccount;
 import com.example.campaign_manager.repository.CampaignRepository;
@@ -31,7 +32,7 @@ public class CampaignService {
 
     public CampaignResponse getCampaignById(Long id) {
         Campaign campaign = campaignRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Campaign not found with id: " + id));
+                .orElseThrow(() -> new BusinessException("Campaign not found with id: " + id));
         return toResponse(campaign);
     }
 
@@ -40,7 +41,7 @@ public class CampaignService {
         EmeraldAccount account = getEmeraldAccount();
 
         if (account.getBalance().compareTo(request.getCampaignFund()) < 0) {
-            throw new RuntimeException("Insufficient Emerald account balance");
+            throw new BusinessException("Insufficient Emerald account balance");
         }
 
         account.setBalance(account.getBalance().subtract(request.getCampaignFund()));
@@ -62,7 +63,7 @@ public class CampaignService {
     @Transactional
     public CampaignResponse updateCampaign(Long id, CampaignRequest request) {
         Campaign campaign = campaignRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Campaign not found with id: " + id));
+                .orElseThrow(() -> new BusinessException("Campaign not found with id: " + id));
 
         EmeraldAccount account = getEmeraldAccount();
 
@@ -70,7 +71,7 @@ public class CampaignService {
 
         if (diff.compareTo(BigDecimal.ZERO) > 0) {
             if (account.getBalance().compareTo(diff) < 0) {
-                throw new RuntimeException("Insufficient Emerald account balance");
+                throw new BusinessException("Insufficient Emerald account balance");
             }
             account.setBalance(account.getBalance().subtract(diff));
         } else {
@@ -93,7 +94,7 @@ public class CampaignService {
     @Transactional
     public void deleteCampaign(Long id) {
         Campaign campaign = campaignRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Campaign not found with id: " + id));
+                .orElseThrow(() -> new BusinessException("Campaign not found with id: " + id));
 
         EmeraldAccount account = getEmeraldAccount();
         account.setBalance(account.getBalance().add(campaign.getCampaignFund()));
@@ -111,7 +112,7 @@ public class CampaignService {
 
     private EmeraldAccount getEmeraldAccount() {
         return emeraldAccountRepository.findById(1L)
-                .orElseThrow(() -> new RuntimeException("Emerald account not found"));
+                .orElseThrow(() -> new BusinessException("Emerald account not found"));
     }
 
     private CampaignResponse toResponse(Campaign campaign) {
