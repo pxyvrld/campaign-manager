@@ -20,6 +20,9 @@ public class CampaignController {
 
     private final CampaignService campaignService;
 
+    private final List<String> predefinedTowns;
+    private final List<String> predefinedKeywords;
+
     @GetMapping
     public ResponseEntity<List<CampaignResponse>> getAllCampaigns() {
         return ResponseEntity.ok(campaignService.getAllCampaigns());
@@ -50,5 +53,15 @@ public class CampaignController {
     @GetMapping("/emerald-balance")
     public ResponseEntity<EmeraldAccountResponse> getEmeraldBalance() {
         return ResponseEntity.ok(campaignService.getEmeraldBalance());
+    }
+
+    @GetMapping("/towns")
+    public ResponseEntity<List<String>> getTowns() {
+        return ResponseEntity.ok(predefinedTowns);
+    }
+
+    @GetMapping("/keywords")
+    public ResponseEntity<List<String>> getKeywords() {
+        return ResponseEntity.ok(predefinedKeywords);
     }
 }
