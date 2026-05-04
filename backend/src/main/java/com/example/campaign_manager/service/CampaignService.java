@@ -64,22 +64,6 @@ public class CampaignService {
         Campaign campaign = campaignRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Campaign not found with id: " + id));
 
-        EmeraldAccount account = getEmeraldAccount(request, campaign);
-
-        emeraldAccountRepository.save(account);
-
-        campaign.setName(request.getName());
-        campaign.setKeywords(request.getKeywords());
-        campaign.setBidAmount(request.getBidAmount());
-        campaign.setCampaignFund(request.getCampaignFund());
-        campaign.setStatus(request.getStatus());
-        campaign.setTown(request.getTown());
-        campaign.setRadius(request.getRadius());
-
-        return toResponse(campaignRepository.save(campaign));
-    }
-
-    private EmeraldAccount getEmeraldAccount(CampaignRequest request, Campaign campaign) {
         EmeraldAccount account = getEmeraldAccount();
 
         BigDecimal diff = request.getCampaignFund().subtract(campaign.getCampaignFund());
@@ -92,7 +76,18 @@ public class CampaignService {
         } else {
             account.setBalance(account.getBalance().subtract(diff));
         }
-        return account;
+
+        emeraldAccountRepository.save(account);
+
+        campaign.setName(request.getName());
+        campaign.setKeywords(request.getKeywords());
+        campaign.setBidAmount(request.getBidAmount());
+        campaign.setCampaignFund(request.getCampaignFund());
+        campaign.setStatus(request.getStatus());
+        campaign.setTown(request.getTown());
+        campaign.setRadius(request.getRadius());
+
+        return toResponse(campaignRepository.save(campaign));
     }
 
     @Transactional
