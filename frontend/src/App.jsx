@@ -2,6 +2,7 @@ import { useState } from 'react';
 import CampaignList from './components/CampaignList';
 import CampaignForm from './components/CampaignForm';
 import EmeraldBalance from './components/EmeraldBalance';
+import './App.css';
 
 function App() {
     const [showForm, setShowForm] = useState(false);
@@ -30,12 +31,13 @@ function App() {
     };
 
     return (
-        <div>
-            <h1>Campaign Manager</h1>
+        <div className="app">
+            <div className="app-header">
+                <h1>Campaign Manager</h1>
+                <EmeraldBalance refreshTrigger={refreshTrigger} />
+            </div>
 
-            <EmeraldBalance refreshTrigger={refreshTrigger} />
-
-            <button onClick={handleNewCampaign}>
+            <button className="btn btn-primary" onClick={handleNewCampaign}>
                 + New Campaign
             </button>
 
