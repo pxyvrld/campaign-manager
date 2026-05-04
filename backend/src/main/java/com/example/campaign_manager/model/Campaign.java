@@ -22,7 +22,7 @@ public class Campaign {
     @Column(nullable = false)
     private String name;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "campaign_keywords", joinColumns = @JoinColumn(name = "campaign_id"))
     @Column(name = "keyword")
     private List<String> keywords;
