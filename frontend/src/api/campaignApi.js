@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080/api/campaigns';
+const BASE_URL = 'https://campaign-manager-production-1377.up.railway.app/api/campaigns';
 
 const api = axios.create({
     baseURL: BASE_URL,
