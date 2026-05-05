@@ -74,3 +74,11 @@
     display: flex;
     gap: 8px;
 }
+
+@media (max-width: 450px) {
+    .campaign-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
