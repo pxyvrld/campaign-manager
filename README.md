@@ -2,6 +2,13 @@
 
 A full-stack CRUD application for managing advertising campaigns, built with Spring Boot and React.
 
+## Live Demo
+
+| Service | URL |
+|---------|-----|
+| Frontend | https://campaign-manager-frontend-iota.vercel.app |
+| Backend API | https://campaign-manager-production-1377.up.railway.app |
+
 ## Features
 
 - Create, edit, and delete advertising campaigns
@@ -11,11 +18,12 @@ A full-stack CRUD application for managing advertising campaigns, built with Spr
 - Campaign status toggle (On/Off)
 - Input validation on both frontend and backend
 - In-memory H2 database
+- Unit tests for service layer
 
 ## Tech Stack
 
 **Backend:**
-- Java 25
+- Java 21
 - Spring Boot 4.0.6
 - Spring Data JPA
 - H2 Database (in-memory)
@@ -30,7 +38,7 @@ A full-stack CRUD application for managing advertising campaigns, built with Spr
 ## Getting Started
 
 ### Prerequisites
-- Java 25
+- Java 21
 - Node.js 18+
 - Maven
 
@@ -58,6 +66,20 @@ npm run dev
 
 Frontend starts on `http://localhost:5173`
 
+## Testing
+
+```bash
+cd backend
+./mvnw test
+```
+
+Tests cover the service layer including:
+- Campaign creation with Emerald balance deduction
+- Insufficient balance validation
+- Campaign deletion with balance refund
+- Campaign update with balance adjustment
+- Error handling for non-existent campaigns
+
 ## API Endpoints
 
 | Method | Endpoint | Description |
@@ -75,7 +97,7 @@ Frontend starts on `http://localhost:5173`
 
 campaign-manager/
 ├── backend/
-│   └── src/main/java/com/example/campaignmanager/
+│   └── src/main/java/com/example/campaign_manager/
 │       ├── config/          # CORS, data seeding, keywords/towns
 │       ├── controller/      # REST controllers
 │       ├── dto/             # Request/Response DTOs
@@ -84,9 +106,9 @@ campaign-manager/
 │       ├── repository/      # Spring Data repositories
 │       └── service/         # Business logic
 └── frontend/
-└── src/
-├── api/             # Axios API layer
-└── components/      # React components
+    └── src/
+        ├── api/             # Axios API layer
+        └── components/      # React components
 
 ## Default Emerald Account Balance
 
